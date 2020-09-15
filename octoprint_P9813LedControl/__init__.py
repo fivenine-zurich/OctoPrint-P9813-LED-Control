@@ -2,8 +2,13 @@
 from __future__ import absolute_import
 import octoprint.plugin
 
+from flask import jsonify
 
-class P9813ledcontrolPlugin(octoprint.plugin.SettingsPlugin,
+import time
+import threading
+
+
+class P9813LedControlPlugin(octoprint.plugin.SettingsPlugin,
                             octoprint.plugin.AssetPlugin,
                             octoprint.plugin.TemplatePlugin,
                             octoprint.plugin.SimpleApiPlugin):
@@ -13,6 +18,9 @@ class P9813ledcontrolPlugin(octoprint.plugin.SettingsPlugin,
 
     torch_timer = None  # Timer for torch function
     return_timer = None  # Timer object when we want to return to idle.
+
+    # Idle, startup, progress etc. Used to put the old effect back on settings change/light switch
+    current_state = 'startup'
 
     def get_api_commands(self):
         # Simple API plugin
@@ -27,7 +35,16 @@ class P9813ledcontrolPlugin(octoprint.plugin.SettingsPlugin,
             torch_status=self.get_torch_status()
         )
 
+    def on_api_command(self, command, data):
+        if command == 'toggle_lights':
+            self.toggle_lights()
+            return self.on_api_get()
+        elif command == 'activate_torch':
+            self.activate_torch()
+            return self.on_api_get()
+
     def toggle_lights(self):
+        # Switch from False -> True or True -> False
         # Switch from False -> True or True -> False
         self.lights_on = False if self.lights_on else True
         self.update_effect('on' if self.lights_on else 'off')
@@ -54,17 +71,78 @@ class P9813ledcontrolPlugin(octoprint.plugin.SettingsPlugin,
             self.update_effect(self.current_state)
             self.torch_on = False
 
+    def update_effect(self, mode_name, value=None, m150=None):
+        if self.return_timer is not None and self.return_timer.is_alive():
+            self.return_timer.cancel()
+
+        if mode_name != 'torch' and self.torch_on:
+            self.torch_on = False
+
+        if mode_name in ['on', 'off']:
+            return
+
     def get_lights_status(self):
         return self.lights_on
 
     def get_torch_status(self):
         return self.torch_on
 
+    def on_settings_save(self, data):
+        octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
+
     # ~~ SettingsPlugin mixin
 
     def get_settings_defaults(self):
         return dict(
-            # put your plugin's default settings here
+            startup_enabled=True,
+            startup_color='#00ff00',
+            startup_delay='75',
+
+            idle_enabled=True,
+            idle_color='#00ccf0',
+            idle_delay='75',
+
+            disconnected_enabled=True,
+            disconnected_color='#000000',
+            disconnected_delay='25',
+
+            failed_enabled=True,
+            failed_effect='Pulse',
+            failed_color='#ff0000',
+            failed_delay='10',
+
+            success_enabled=True,
+            success_effect='Rainbow',
+            success_color='#000000',
+            success_delay='25',
+            success_return_idle='0',
+
+            paused_enabled=True,
+            paused_effect='Bounce',
+            paused_color='#0000ff',
+            paused_delay='40',
+
+            progress_print_enabled=True,
+            progress_print_color_base='#000000',
+            progress_print_color='#00ff00',
+
+            printing_enabled=False,
+            printing_effect='Solid Color',
+            printing_color='#ffffff',
+            printing_delay=1,
+
+            progress_heatup_enabled=True,
+            progress_heatup_color_base='#0000ff',
+            progress_heatup_color='#ff0000',
+            progress_heatup_tool_enabled=True,
+            progress_heatup_bed_enabled=True,
+            progress_heatup_tool_key=0,
+
+            torch_enabled=True,
+            torch_effect='Solid Color',
+            torch_color='#ffffff',
+            torch_delay=1,
+            torch_timer=15,
         )
 
     # ~~ AssetPlugin mixin
@@ -114,7 +192,7 @@ __plugin_pythoncompat__ = ">=3,<4"
 
 def __plugin_load__():
     global __plugin_implementation__
-    __plugin_implementation__ = P9813ledcontrolPlugin()
+    __plugin_implementation__ = P9813LedControlPlugin()
 
     global __plugin_hooks__
     __plugin_hooks__ = {
