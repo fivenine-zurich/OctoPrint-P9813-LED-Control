@@ -1,0 +1,4 @@
+include README.md
+recursive-include octoprint_P9813LedControl/templates *
+recursive-include octoprint_P9813LedControl/translations *
+recursive-include octoprint_P9813LedControl/static *
