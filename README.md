@@ -1,6 +1,6 @@
-# P9813 LED Control
+# OctoPrint P9813 LED Control
 
-**TODO:** Describe what your plugin does.
+Adds support for controlling and displaying printer status with P9813 controller based LED's connected to a Raspberry Pi.
 
 ## Setup
 
@@ -16,7 +16,9 @@ the plugin manager.
 
 **TODO:** Describe your plugin's configuration options (if any).
 
-## Debugging
+## Development
+
+Setup local OctoPrint installation and install the plugin for local development.
 
 ```sh
 virtualenv --python=/usr/bin/python3 venv3
@@ -25,7 +27,13 @@ pip install "OctoPrint>=1.4.0rc1"
 pip install -e ./
 ```
 
+Start the local OctoPrint instance.
+
 ```sh
 source venv3/bin/activate
 octoprint serve --debug
 ```
+
+### Thanks
+
+This plugin is based on the excellent [OctoPrint WS281x LED Status Plugin](https://github.com/cp2004/OctoPrint-WS281x_LED_Status).

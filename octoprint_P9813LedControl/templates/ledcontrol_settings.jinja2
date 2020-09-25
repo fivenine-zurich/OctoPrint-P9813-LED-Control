@@ -1,6 +1,116 @@
 <h3>{{ _('P9813 LED Control') }}</h3>
 <form class="form-horizontal">
     <label class="checkbox inline">
-        <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.torch_enabled">Enable torch effect and button
+    <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.startup_enabled">Enable startup light
+    </label>
+    <div class="form-inline" data-bind="visible: settings.plugins.P9813LedControl.startup_enabled">
+        <label class="inline"> Colour </label>
+        <input type="color" class="input-small" data-bind="value: settings.plugins.P9813LedControl.startup_color">
+        <label class="inline"> Delay </label>
+        <div class="input-append">
+            <input type="number" class="input-small" data-bind="value: settings.plugins.P9813LedControl.startup_delay">
+            <span class="add-on">ms</span>
+        </div>
+    </div>
+
+    <br>
+    <label class="checkbox inline">
+        <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.idle_enabled">Enable idle effect
+    </label>
+    <div class="form-inline" data-bind="visible: settings.plugins.P9813LedControl.idle_enabled">
+        <label class="inline"> Colour </label>
+        <input type="color" class="input-small" data-bind="value: settings.plugins.P9813LedControl.idle_color">
+        <label class="inline"> Delay </label>
+        <div class="input-append">
+            <input type="number" class="input-small" data-bind="value: settings.plugins.P9813LedControl.idle_delay">
+            <span class="add-on">ms</span>
+        </div>
+
+    </div>
+
+    <label class="checkbox inline">
+        <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.progress_print_enabled">Enable printing effect
+    </label>
+    <div class="form-inline" data-bind="visible: settings.plugins.P9813LedControl.progress_print_enabled">
+        <label class="inline"> Color </label>
+        <input type="color" class="input-small" data-bind="value: settings.plugins.P9813LedControl.progress_print_color">
+    </div>
+    <br>
+
+    <label class="checkbox inline">
+        <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.progress_heatup_enabled">Enable heating effect
+    </label>
+    <br>
+    <div class="form-inline" data-bind="visible: settings.plugins.P9813LedControl.progress_heatup_enabled">
+        <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.progress_heatup_bed_enabled">
+        <label class="inline" style="padding-right: 10px"> Track bed heating </label>
+        <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.progress_heatup_tool_enabled">
+        <label class="inline" style="padding-right: 10px"> Track tool heating </label>
+        <label class="inline" data-bind="visible: settings.plugins.P9813LedControl.progress_heatup_tool_enabled"> Index of Tool to track: </label>
+        <div class="input-prepend">
+            <span class="add-on">T</span>
+            <input type="number" class="input-small" data-bind="value: settings.plugins.P9813LedControl.progress_heatup_tool_key, visible: settings.plugins.P9813LedControl.progress_heatup_tool_enabled">
+        </div>
+    </div>
+    <div class="form-inline" data-bind="visible: settings.plugins.P9813LedControl.progress_heatup_enabled">
+        <label class="inline"> Color </label>
+        <input type="color" class="input-small" data-bind="value: settings.plugins.P9813LedControl.progress_heatup_color">
+    </div>
+
+    <br>
+    <label class="checkbox inline">
+        <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.success_enabled">Enable print success effect
+    </label>
+    <div class="form-inline" data-bind="visible: settings.plugins.P9813LedControl.success_enabled">
+        <label class="inline"> Colour </label>
+        <input type="color" class="input-small" data-bind="value: settings.plugins.P9813LedControl.success_color">
+        <label class="inline"> Delay </label>
+        <div class="input-append">
+            <input type="number" class="input-small" data-bind="value: settings.plugins.P9813LedControl.success_delay">
+            <span class="add-on">ms</span>
+        </div>
+    </div>
+    <div class="form-inline" style="margin-top: 0.5rem;" data-bind="visible: settings.plugins.P9813LedControl.success_enabled">
+        <label class="inline">Return to idle after:</label>
+        <div class="input-append">
+            <input class="input-medium" type="number" data-bind="value: settings.plugins.P9813LedControl.success_return_idle">
+            <span class="add-on">secs</span>
+        </div>
+        <p class="help-block">Set this to 0 and the idle effect will not resume - it will remain 'finished'</p>
+    </div>
+
+    <br>
+    <label class="checkbox inline">
+        <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.failed_enabled">Enable failed effect
+    </label>
+    <div class="form-inline" data-bind="visible: settings.plugins.P9813LedControl.failed_enabled">
+        <label class="inline"> Colour </label>
+        <input type="color" class="input-small" data-bind="value: settings.plugins.P9813LedControl.failed_color">
+        <label class="inline"> Delay </label>
+        <div class="input-append">
+            <input type="number" class="input-small" data-bind="value: settings.plugins.P9813LedControl.failed_delay">
+            <span class="add-on">ms</span>
+        </div>
+    </div>
+
+    <br>
+    <label class="checkbox inline">
+        <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.paused_enabled">Enable paused effect
+    </label>
+    <div class="form-inline" data-bind="visible: settings.plugins.P9813LedControl.paused_enabled">
+    <label class="inline">Effect </label>
+        <label class="inline"> Colour </label>
+        <input type="color" class="input-small" data-bind="value: settings.plugins.P9813LedControl.paused_color">
+        <label class="inline"> Delay </label>
+        <div class="input-append">
+            <input type="number" class="input-small" data-bind="value: settings.plugins.P9813LedControl.paused_delay">
+            <span class="add-on">ms</span>
+        </div>
+    </div>
+
+    <br>
+
+    <label class="checkbox inline">
+        <input type="checkbox" data-bind="checked: settings.plugins.P9813LedControl.torch_enabled">Enable torch and button
     </label>
 </form>
