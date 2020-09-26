@@ -34,7 +34,7 @@ plugin_url = "https://github.com/fiveninedigital/OctoPrint-P9813-LED-Control"
 plugin_license = "AGPLv3"
 
 # Any additional requirements besides OctoPrint should be listed here
-plugin_requires = []
+plugin_requires = ['gpiozero']
 
 # --------------------------------------------------------------------------------------------------------------------
 # More advanced options that you usually shouldn't have to touch follow after this point
