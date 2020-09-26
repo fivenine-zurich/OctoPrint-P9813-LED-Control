@@ -24,6 +24,7 @@ Setup local OctoPrint installation and install the plugin for local development.
 virtualenv --python=/usr/bin/python3 venv3
 source venv3/bin/activate
 pip install "OctoPrint>=1.4.0rc1"
+pip install -e .[develop,plugins]
 pip install -e ./
 ```
 

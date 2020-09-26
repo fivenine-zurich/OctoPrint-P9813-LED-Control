@@ -7,6 +7,8 @@ from flask import jsonify
 import time
 import threading
 
+from octoprint_P9813LedControl.ledstrip import LEDStrip
+
 
 class P9813LedControlPlugin(octoprint.plugin.SettingsPlugin,
                             octoprint.plugin.AssetPlugin,
@@ -21,6 +23,7 @@ class P9813LedControlPlugin(octoprint.plugin.SettingsPlugin,
 
     # Idle, startup, progress etc. Used to put the old effect back on settings change/light switch
     current_state = 'startup'
+    led = LEDStrip(13, 12)
 
     def get_api_commands(self):
         # Simple API plugin
@@ -71,15 +74,30 @@ class P9813LedControlPlugin(octoprint.plugin.SettingsPlugin,
             self.update_effect(self.current_state)
             self.torch_on = False
 
-    def update_effect(self, mode_name, value=None, m150=None):
+    def update_effect(self, mode_name, value=None):
+        self._logger.debug(
+            "Update Effect: {}".format(mode_name))
+
         if self.return_timer is not None and self.return_timer.is_alive():
             self.return_timer.cancel()
 
         if mode_name != 'torch' and self.torch_on:
             self.torch_on = False
 
-        if mode_name in ['on', 'off']:
+        if mode_name in ['on']:
+            self.led.setcolourwhite()
             return
+
+        if mode_name == 'off':
+            self.led.setcolouroff()
+            return
+
+        if mode_name == 'torch':
+            if self.torch_on:
+                self.led.setcolourwhite()
+            else:
+                self.led.setcolouroff()
+                return
 
     def get_lights_status(self):
         return self.lights_on
@@ -182,7 +200,7 @@ class P9813LedControlPlugin(octoprint.plugin.SettingsPlugin,
                 current=self._plugin_version,
 
                 # update method: pip
-                pip="https://github.com/you/P9813LEDControl/archive/{target_version}.zip"
+                pip="https://github.com/fiveninedigital/OctoPrint-P9813-LED-Control/archive/{target_version}.zip"
             )
         )
 
