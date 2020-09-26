@@ -28,7 +28,7 @@ plugin_author = "Tobias Herrmann"
 plugin_author_email = "tobias@fivenine.ch"
 
 # The plugin's homepage URL. Can be overwritten within OctoPrint's internal data via __plugin_url__ in the plugin module
-plugin_url = "https://github.com/you/P9813LEDControl"
+plugin_url = "https://github.com/fiveninedigital/OctoPrint-P9813-LED-Control"
 
 # The plugin's license. Can be overwritten within OctoPrint's internal data via __plugin_license__ in the plugin module
 plugin_license = "AGPLv3"
