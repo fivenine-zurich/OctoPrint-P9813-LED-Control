@@ -2,12 +2,21 @@ $(function () {
     function P9813LedControlStatusViewModel(parameters) {
         var self = this;
         self.settingsViewModel = parameters[0];
+        self.printerStateModel = parameters[1];
 
         self.torch_enabled = ko.observable(true);
 
         var light_icon = $("#lightIcon");
         var switch_icon = $("#toggleSwitch");
         var torch_icon = $("#torchIcon");
+
+        setInterval(updateButtonStates, 5000);
+
+        function updateButtonStates() {
+            OctoPrint.simpleApiCommand("P9813LedControl", "get_status").done(
+                update_light_status
+            );
+        }
 
         function update_light_status(response) {
             if (response.lights_status) {
@@ -50,13 +59,9 @@ $(function () {
                 "P9813LedControl",
                 "activate_torch"
             ).done(update_light_status);
-            setTimeout(self.torch_off, parseInt(torch_time, 10) * 1000);
-        };
-
-        self.torch_off = function () {
-            torch_icon.attr(
-                "src",
-                "plugin/P9813LedControl/static/svg/flashlight-outline.svg"
+            setTimeout(
+                self.updateButtonStates,
+                parseInt(torch_time, 10) * 1000
             );
         };
 
@@ -66,21 +71,16 @@ $(function () {
             );
         };
 
-        self.onSettingsBeforeSave = function () {};
+        self.onStartupComplete = function () {
+            self.printerStateModel.onEventPrinterStateChanged = function () {
+                updateButtonStates();
+            };
+        };
     }
 
     OCTOPRINT_VIEWMODELS.push({
         construct: P9813LedControlStatusViewModel,
-        dependencies: ["settingsViewModel"],
+        dependencies: ["settingsViewModel", "printerStateViewModel"],
         elements: ["#navbar_plugin_P9813LedControl"],
-    });
-
-    function P9813LedControlSettingsViewModel(parameters) {
-        var self = this;
-    }
-
-    OCTOPRINT_VIEWMODELS.push({
-        construct: P9813LedControlSettingsViewModel,
-        dependencies: ["settingsViewModel"],
     });
 });

@@ -84,8 +84,6 @@ class LEDStrip:
         self.setcolourrgb(0, 0, 255)
 
     def setcolourhex(self, hex):
-        print('Hex')
-
         try:
             hexcolour = int(hex, 16)
             red = int((hexcolour & 255 * 255 * 255) / (255 * 255))
@@ -100,3 +98,5 @@ class LEDStrip:
 
     def cleanup(self):
         self.setcolouroff()
+        self.__clockLed.close()
+        self.__dataLed.close()
