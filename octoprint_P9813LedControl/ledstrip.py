@@ -1,3 +1,6 @@
+# Based on  Philip Leder's ledstrip.py (https://github.com/schlank/Catalex-Led-Strip-Driver-Raspberry-Pi)
+# adapted to gpiozero
+
 import time
 from gpiozero import LED, Device
 

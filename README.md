@@ -9,12 +9,9 @@ or manually using this URL:
 
     https://github.com/fiveninedigital/OctoPrint-P9813-LED-Control/archive/master.zip
 
-**TODO:** Describe how to install your plugin, if more needs to be done than just installing it via pip or through
-the plugin manager.
-
 ## Configuration
 
-**TODO:** Describe your plugin's configuration options (if any).
+Configure the required Raspberry Pi GPIO's for your LED controller in the plugin's settings page.
 
 ## Development
 
@@ -25,6 +22,11 @@ virtualenv --python=/usr/bin/python3 venv3
 source venv3/bin/activate
 pip install "OctoPrint>=1.4.0rc1"
 pip install -e .[develop,plugins]
+```
+
+Install the plugin for development
+
+```sh
 pip install -e ./
 ```
 
@@ -37,4 +39,7 @@ octoprint serve --debug
 
 ### Thanks
 
-This plugin is based on the excellent [OctoPrint WS281x LED Status Plugin](https://github.com/cp2004/OctoPrint-WS281x_LED_Status).
+This plugin is based on
+
+- [OctoPrint WS281x LED Status Plugin](https://github.com/cp2004/OctoPrint-WS281x_LED_Status).
+- Philip Leder's ledstrip.py (https://github.com/schlank/Catalex-Led-Strip-Driver-Raspberry-Pi).
