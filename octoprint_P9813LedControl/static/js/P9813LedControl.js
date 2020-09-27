@@ -20,30 +20,18 @@ $(function () {
 
         function update_light_status(response) {
             if (response.lights_status) {
-                light_icon
-                    .removeClass("far-custom text-error")
-                    .addClass("fas-custom text-success");
-                switch_icon
-                    .removeClass("fa-toggle-off text-error")
-                    .addClass("fa-toggle-on text-success");
+                light_icon.addClass("text-warning");
+                switch_icon.addClass("fa-toggle-on text-warning");
             } else {
-                light_icon
-                    .removeClass("fas-custom text-success")
-                    .addClass("far-custom text-error");
+                light_icon.removeClass("text-warning");
                 switch_icon
-                    .removeClass("fa-toggle-on text-success")
-                    .addClass("fa-toggle-off text-error");
+                    .removeClass("fa-toggle-on text-warning")
+                    .addClass("fa-toggle-off");
             }
             if (response.torch_status) {
-                torch_icon.attr(
-                    "src",
-                    "plugin/P9813LedControl/static/svg/flashlight.svg"
-                );
+                torch_icon.addClass("text-warning");
             } else {
-                torch_icon.attr(
-                    "src",
-                    "plugin/P9813LedControl/static/svg/flashlight-outline.svg"
-                );
+                torch_icon.removeClass("text-warning");
             }
         }
 
