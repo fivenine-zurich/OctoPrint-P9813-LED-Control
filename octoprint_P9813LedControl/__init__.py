@@ -357,7 +357,7 @@ class P9813LedControlPlugin(
     def get_template_configs(self):
         return [
             dict(type="settings", name="P9813 LED Control",
-                 template="ledcontrol_settings.jinja2", custom_bindings=True),
+                 template="ledcontrol_settings.jinja2", custom_bindings=False),
             dict(type="navbar", name="P9813 LED Control",
                  template="ledcontrol_navbar.jinja2", custom_bindings=True)
         ]
