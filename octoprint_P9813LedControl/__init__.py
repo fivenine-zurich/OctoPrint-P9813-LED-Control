@@ -54,6 +54,7 @@ class P9813LedControlPlugin(
 
     def on_after_startup(self):
         self.restart_strip()
+        self.update_effect("off")
 
     def return_to_idle(self):
         self.update_effect('idle')
